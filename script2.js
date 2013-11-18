@@ -84,11 +84,8 @@ $(document).ready(function(){
 			//do nothing; you are already on that page
 		}
 		else {
-				if(category == 'products' || category == 'specials' || category == 'about'){
+				if(category == 'products' || category == 'specials'){
 					var categorypage = category+".php"; 
-					if(category == 'about'){
-						$.getScript("about_script.js");
-					}
 				}
 				else {
 					var categorypage = category+".html";
@@ -122,18 +119,6 @@ $(document).ready(function(){
 			});
 		} else {
 		}
-	});
-
-	$('#submitDiv').click(function(e){
-		e.preventDefault();
-		$mainContent.load("about.php",function(){
-			$('#commentForm').submit(function(e){
-				e.preventDefault();
-				var data = $(this).serialize();
-				console.log(data);
-				$mainContent.load($(this).attr('action'),data);
-			});
-		});
 	});
 
 

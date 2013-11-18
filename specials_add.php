@@ -4,12 +4,12 @@
 <div id="maincontent" class="main">
 	<?php 
 		$submitted=false;
-		if($_POST[prodName] != NULL)
+		if($_POST[prodName] != NULL) // check if there's data to submit from the form (not finalize)
 		{
 			$submitted=true;
 			echo "<p>Data Submitted. Adding to MySQL Database.</p>";
 		}
-		elseif($_POST[spcDate] != NULL)
+		elseif($_POST[spcDate] != NULL) // check if we are finalizing the data (there is a date)
 		{
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
 			mysql_select_db("sfclax_specials") or die(mysql_error());
@@ -19,7 +19,14 @@
 			mysql_query("INSERT INTO specials(spc_name,spc_price) VALUES('$_POST[spcDate]','END')");
 			echo "<p>Specials finalized. Migrating temp data to current database.</p>";
 		}
-		else
+		elseif($_POST[clearSpec] == true){
+			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
+			mysql_select_db("sfclax_specials") or die(mysql_error());
+			mysql_query("DROP TABLE IF EXISTS specials");
+			mysql_query("DROP TABLE IF EXISTS specials_temp");
+			echo "<p>CLEAR BUTTON HIT!</p>";
+		}
+		else //no new data, no finalizing. create the temp database for adding items
 		{
 			echo "<p>No data to add.</p>";
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
@@ -113,11 +120,11 @@
                 	$name = $date;
                 	echo "DATE IS ".$date."!";
                 }
-                else
-                {
+                //else
+                //{
 	                echo "<tr><td syle='width: 100px'>".$prd_id."</td><td style='width:75px'><a href='products/".$image."' target='_blank'><img src='products/thumbs/th_".$image."' /></a></td>";
 	                echo "<td style='width: 300px;'>".$name."</td><td style='width:100px'>".$origprice."</td><td style='width:100px'>".$price."</td></tr>";	
-	            }
+	            //}
                 
             }
             
@@ -127,6 +134,12 @@
         ?>
     </section>
     <p></p>
+    <section id="clearProductsForm">
+    	<form name="clearSpecials" action="specials_add.php" method="post" enctype="multipart/form-data">
+    		<p><input type="hidden" value="true" name="clearSpec" /></p>
+    		<p><input type="submit" value="CLEAR CURRENT SPECIALS" /></p>
+    	</form>
+    </section>
     <section id="addProductsForm">
     	<form name="addProduct" action="specials_add.php" method="post" enctype="multipart/form-data">
             <p>Name: <input type="text" name="prodName" /></p>
@@ -137,7 +150,8 @@
         </form>
     </section>
     <section>
-    	CLICK HERE WHEN READY TO SUBMIT FINALIZED SPECIALS FOR THE WEEK
+    	<p>CLICK HERE WHEN READY TO SUBMIT FINALIZED SPECIALS FOR THE WEEK.</p>
+    	<p>Please note that you MUST enter a date below for this changes to go through.</p>
     	<form name="finalizeSpecials" action="specials_add.php" method="post" enctype="multipart/form-data">
     		<p>Date for specials: <input type="text" name="spcDate" /></p>
     		<p><input type="submit" value="Finalize" /></p>

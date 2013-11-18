@@ -28,7 +28,7 @@ td, th{
 	height:auto;
 	width:80%;
 	font-size:1em;
-	font-family:Georgia, Segoe UI, Arial, Verdana;
+	font-family:Open Sans, Segoe UI, Arial, Verdana;
 }
 
 #side{
@@ -79,7 +79,7 @@ section{
 	padding-left:10px;
 	color:white;
 	font-size:1.2em;
-	font-family:Georgia, Segoe UI, Arial, Verdana;
+	font-family:Open Sans, Segoe UI, Arial, Verdana;
 }
 
 .buttons{
@@ -210,13 +210,16 @@ section{
 
 #addProductsForm form input{
 	width:400px;
-<<<<<<< HEAD
-=======
 }
 
 /*styles for about page*/
-#formBox{
+#formBox, #commentForm{
+	margin:auto;
 	text-align:right;
-	width:350px;
->>>>>>> specials page, small cosmetic changes
+	width:400px;
+}
+
+#submitDiv{
+	width:100px;
+	height:40px;
 }
