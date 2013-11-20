@@ -223,3 +223,15 @@ section{
 	width:100px;
 	height:40px;
 }
+
+#clearProductsForm{
+	background-color:#94FFFF;
+}
+
+#addProductsForm{
+	background-color:#35C9C9;
+}
+
+#finalizeForm{
+	background-color:#80FF7A;
+}

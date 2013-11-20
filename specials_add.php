@@ -1,6 +1,6 @@
 <!--<link style="text/css" rel="stylesheet" href="des1style.css" />-->
 <link style="text/css" rel="stylesheet" href="contentstyle.css" />
-
+<link href="//fonts.googleapis.com/css?family=Open+Sans:600,300" rel="stylesheet" type="text/css">
 <div id="maincontent" class="main">
 	<?php 
 		$submitted=false;
@@ -8,6 +8,21 @@
 		{
 			$submitted=true;
 			echo "<p>Data Submitted. Adding to MySQL Database.</p>";
+		}
+		elseif($_POST[clearSpec] == true){
+			$cleared = true;
+			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
+			mysql_select_db("sfclax_specials") or die(mysql_error());
+			mysql_query("DROP TABLE IF EXISTS specials");
+			mysql_query("DROP TABLE IF EXISTS specials_temp");
+			echo "<p><strong>DATABASE CLEARED!</strong></p>";
+			mysql_query("CREATE TABLE IF NOT EXISTS  specials_temp(
+				spc_id int not null auto_increment primary key,
+				spc_name varchar(355) not null,
+				spc_price varchar(255) not null,
+				spc_origprice varchar(255) not null,
+				spc_imageurl varchar(355) not null
+			) ENGINE = InnoDB");
 		}
 		elseif($_POST[spcDate] != NULL) // check if we are finalizing the data (there is a date)
 		{
@@ -18,13 +33,6 @@
 			mysql_query("INSERT INTO specials SELECT * FROM specials_temp");
 			mysql_query("INSERT INTO specials(spc_name,spc_price) VALUES('$_POST[spcDate]','END')");
 			echo "<p>Specials finalized. Migrating temp data to current database.</p>";
-		}
-		elseif($_POST[clearSpec] == true){
-			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_specials") or die(mysql_error());
-			mysql_query("DROP TABLE IF EXISTS specials");
-			mysql_query("DROP TABLE IF EXISTS specials_temp");
-			echo "<p>CLEAR BUTTON HIT!</p>";
 		}
 		else //no new data, no finalizing. create the temp database for adding items
 		{
@@ -41,7 +49,7 @@
 		}
 	?>
 		
-    <div id="side" class="data"><h2>Products</h2></div>    
+    <div id="side" class="data"><h2>Products Preview</h2></div>    
     <!--PHP to submit the item to MySQL database -->
     <?php
 		if($submitted)
@@ -125,22 +133,24 @@
 	                echo "<tr><td syle='width: 100px'>".$prd_id."</td><td style='width:75px'><a href='products/".$image."' target='_blank'><img src='products/thumbs/th_".$image."' /></a></td>";
 	                echo "<td style='width: 300px;'>".$name."</td><td style='width:100px'>".$origprice."</td><td style='width:100px'>".$price."</td></tr>";	
 	            //}
-                
             }
-            
             //next step is to make this into a grid system, load these values into a smaller enclosed
             //table format and then every 4-5 or so, line break to the next row?
             echo "</table>";
         ?>
     </section>
     <p></p>
-    <section id="clearProductsForm">
+    <section id="clearProductsForm" class="data">
+    	<h2>Step 1: Click this button to CLEAR the current specials listed. This will delete ALL items in "specials".</h2>
     	<form name="clearSpecials" action="specials_add.php" method="post" enctype="multipart/form-data">
     		<p><input type="hidden" value="true" name="clearSpec" /></p>
     		<p><input type="submit" value="CLEAR CURRENT SPECIALS" /></p>
     	</form>
     </section>
-    <section id="addProductsForm">
+    <section id="addProductsForm" class="data">
+    	<h2>Step 2: Add each special individually here. The "Price" fields are not strict to numbers - you can put "3 for 2", etc.</h2>
+    	<p>Once you hit "submit", the page will refresh and the item will be added to the list above. Repeat until complete.</p>
+    	<p><strong>As of right now, you can ONLY upload JPG files. I am working on fixing this.</strong></p>
     	<form name="addProduct" action="specials_add.php" method="post" enctype="multipart/form-data">
             <p>Name: <input type="text" name="prodName" /></p>
             <p>Reg. Price: <input type="text" name="prodRegPrice" /></p>
@@ -149,12 +159,13 @@
             <p><input type="submit" value="Submit" /></p>
         </form>
     </section>
-    <section>
-    	<p>CLICK HERE WHEN READY TO SUBMIT FINALIZED SPECIALS FOR THE WEEK.</p>
-    	<p>Please note that you MUST enter a date below for this changes to go through.</p>
+    <section id="finalizeForm" class="data">
+    	<p><h2>Step 3: CLICK HERE WHEN READY TO SUBMIT FINALIZED SPECIALS FOR THE WEEK.</h2></p>
+    	<p>Please note that you MUST enter a date below for this change to go through.</p>
+    	<p>Once you hit "Finalize", the current list of items you see above will be sent to the "Specials" page on the main site.</p>
     	<form name="finalizeSpecials" action="specials_add.php" method="post" enctype="multipart/form-data">
-    		<p>Date for specials: <input type="text" name="spcDate" /></p>
-    		<p><input type="submit" value="Finalize" /></p>
+    		<p><strong>Date for specials: <input type="text" name="spcDate" /></strong></p>
+    		<p><input id="submitDiv" type="submit" value="Finalize" /></p>
     </section>
         
 </div>

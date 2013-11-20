@@ -1,8 +1,8 @@
 $(document).ready(function(e){
 	//e.preventDefault();
-	$("#commentForm").on('submit', function(e){
+	$('#commentForm').on('submit', function(e){
 		e.preventDefault();
-		$("#commentForm").validate({
+		$('#commentForm').validate({
 				debug: false,
 				rules: {
 					name: "required",
