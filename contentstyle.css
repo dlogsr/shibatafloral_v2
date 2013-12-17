@@ -212,6 +212,16 @@ section{
 	width:400px;
 }
 
+.flyerSpecial{
+	padding: 1em 0 1em;
+	text-align:center;
+	max-width: 800px;
+}
+
+.flyerSpecial img{
+	width:100%;
+}
+
 /*styles for about page*/
 #formBox, #commentForm{
 	margin:auto;
@@ -253,14 +263,14 @@ section{
 }
 
 #commentForm input, #commentForm textarea{
-	border-radius: 15px;
+	border-radius: 8px;
 	padding:10px;
 	border:none;
 	margin: 0 0 10px 0;
 }
 
 #commentForm input[type="submit"]{
-	border-radius:25px;
+	border-radius:8px;
 	font-face:'Open Sans';
 	font-size:1em;
 	font-weight:bold;

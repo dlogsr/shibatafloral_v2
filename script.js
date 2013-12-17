@@ -85,7 +85,12 @@ $(document).ready(function(){
 		}
 		else {
 				if(category == 'products' || category == 'specials' || category == 'about'){
-					var categorypage = category+".php"; 
+					if(category == 'specials'){
+						var categorypage = "dumb_"+category+".php";
+					}
+					else{
+						var categorypage = category+".php"; 
+					}
 					if(category == 'about'){
 						$.getScript("about_script.js");
 					}
