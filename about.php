@@ -40,7 +40,7 @@
                 With origins tracing back to 1921, Shibata Floral Company is now in its fourth generation of family ownership.  Beginning as rose growers the company expanded into carnation growing, chrysanthemum propagation and floral supplies. Shibata Floral now has evolved into a multifaceted distribution business offering thousands of floral related products from all over the world through its locations in the San Francisco,  Los Angeles and Portland flower markets.
             </p>
         </section>
-        <iframe src="about_inset.php" seamless='seamless' width="800" height="400" frameborder="0"></iframe>
+        <iframe src="about_inset.php" seamless='seamless' width="800" height="440" frameborder="0"></iframe>
         <!--<section>
             <p>
                 If you'd like to contact us by e-mail, please fill out this form. We will respond to you as quickly as possible!
