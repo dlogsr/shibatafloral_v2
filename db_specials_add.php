@@ -17,7 +17,7 @@
 		elseif($_POST[clearSpec] == true){
 			$cleared = true;
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
 			mysql_query("DROP TABLE IF EXISTS specials");
 			mysql_query("DROP TABLE IF EXISTS specials_temp");
 			echo "<p><strong>DATABASE CLEARED!</strong></p>";
@@ -26,13 +26,14 @@
 				spc_name varchar(355) not null,
 				spc_price varchar(255) not null,
 				spc_origprice varchar(255) not null,
+				spc_location varchar(255) not null,
 				spc_imageurl varchar(355) not null
 			) ENGINE = InnoDB");
 		}
 		elseif($_POST[spcDate] != NULL) // check if we are finalizing the data (there is a date)
 		{
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
 			mysql_query("DROP TABLE IF EXISTS specials");
 			mysql_query("CREATE TABLE specials LIKE specials_temp");
 			mysql_query("INSERT INTO specials SELECT * FROM specials_temp");
@@ -43,31 +44,31 @@
 		{
 			echo "<p>No data to add.</p>";
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
 			mysql_query("CREATE TABLE IF NOT EXISTS  specials_temp(
 				spc_id int not null auto_increment primary key,
 				spc_name varchar(355) not null,
 				spc_price varchar(255) not null,
 				spc_origprice varchar(255) not null,
+				spc_location varchar(255) not null,
 				spc_imageurl varchar(355) not null
 			) ENGINE = InnoDB");
 		}
 	?>
 		
-    <div id="side" class="data"><h2>Products Preview</h2></div>    
     <!--PHP to submit the item to MySQL database -->
     <?php
 		if($submitted)
 		{
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
 
 			//make sure we know what to save the file name as in the DB
 			$filename = $_FILES['uploadedfile']['name'];
 				$tempfilename = $_FILES['uploadedfile']['tmp_name'];
 			
-			$sql= "INSERT INTO specials_temp(spc_name,spc_origprice,spc_price,spc_imageurl) 
-						VALUES('$_POST[prodName]','$_POST[prodRegPrice]','$_POST[prodPrice]','$filename')";
+			$sql= "INSERT INTO specials_temp(spc_name,spc_origprice,spc_price,spc_location,spc_imageurl) 
+						VALUES('$_POST[prodName]','$_POST[prodRegPrice]','$_POST[prodPrice]','$_POST[prodLocation]','$filename')";
 			$result = mysql_query($sql)or die(mysql_error());
 			//this ends the MySQL data storage.
 			
@@ -83,65 +84,26 @@
 			}
 			
 			//create thumbnail of that image
-			$maxsize = 150;
+			$maxsize = 796;
 			
-			if(imagesx($img) >= imagesy($img)) {
+			//if(imagesx($img) >= imagesy($img)) {
 				$thumb_x = $maxsize;
 				$thumb_y = imagesy($img)*($maxsize/imagesx($img));
-			} else {
+			/*} else {
 				$thumb_y = $maxsize;
 				$thumb_x = imagesx($img)*($maxsize/imagesy($img));
-			}
+			}*/
 			
 			$thumb = imagecreatetruecolor($thumb_x,$thumb_y);	
 			imagecopyresampled($thumb, $img, 0, 0, 0, 0, $thumb_x, $thumb_y, imagesx($img), imagesy($img));
-			imagejpeg($thumb, 'specials/thumbs/th_'. basename($filename));
+			imagejpeg($thumb, 'specials/thumbs/th_'. basename($filename),60);
 			
 			echo "<p>Done.</p>";
 		}
 	?>
 	
     
-    <section id="content" class="data">
-        <div id="stage" class="data" hidden>
-    	Item to submit:<br />
-        Name: <?php echo $_POST["prodName"]; ?><br />
-        Reg Price: <?php echo $_POST["prodOrigPrice"]; ?><br />
-        Special Price: <?php echo $_POST["prodPrice"]; ?><br />
-        Image: <?php echo $_FILES['uploadedfile']['name']; ?>
-        <p></p>
-	    </div>
-        <?php
-            mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-            mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
-            
-            $sql = "SELECT * FROM specials_temp";
-            $result = mysql_query($sql)or die(mysql_error());
-            
-            echo "<table>";
-            
-            while($row = mysql_fetch_array($result)){
-                $prd_id = $row['spc_id'];
-                $name    = $row['spc_name'];
-                $price     = $row['spc_price'];
-                $origprice = $row['spc_origprice'];
-                $image = $row['spc_imageurl'];
 
-                if($price="END")
-                {
-                	$name = $date;
-                	//echo "DATE IS ".$date."!";
-                }
-                //else
-                //{
-	                echo "<tr><td syle='width: 100px'>".$prd_id."</td><td style='width:75px'><a href='specials/".$image."' target='_blank'><img src='specials/thumbs/th_".$image."' /></a></td></tr>";
-	            //}
-            }
-            //next step is to make this into a grid system, load these values into a smaller enclosed
-            //table format and then every 4-5 or so, line break to the next row?
-            echo "</table>";
-        ?>
-    </section>
     <p></p>
     <section id="clearProductsForm" class="data">
     	<h2>Step 1: Click this button to CLEAR the current specials listed. This will delete ALL items in "specials".</h2>
@@ -153,13 +115,20 @@
     <section id="addProductsForm" class="data">
     	<h2>Step 2: Add each special individually here.</h2>
     	<p>Once you hit "submit", the page will refresh and the item will be added to the list above. <strong>Repeat until complete.</strong></p>
-    	<p><strong>As of right now, you can ONLY upload JPG files.</strong></p>
+    	<p><strong>As of right now, you can ONLY upload JPG files.</strong> You can review what's been upload so far at the bottom of the page.</p>
     	<p><strong>The files must NOT have the same name (i.e. both named "special_1.jpg")</strong></p>
-    	<form name="addProduct" action="db_specials_add.php" method="post" enctype="multipart/form-data">
+    	<form name="addProduct" action="db_specials_add.php" method="post" enctype="multipart/form-data" style="text-align:left;width:500px;margin:auto">
             <input type="hidden" name="prodName" value="Name"/>
             <input type="hidden" name="prodRegPrice" value="Price"/>
             <input type="hidden" name="prodPrice" value="Price2" step="any"/>
             <p>Image File: <input name="uploadedfile" type="file" /></p>
+            <p>Region for this Special:
+            	<select name="prodLocation">
+            		<option value="lax">Los Angeles</option>
+            		<option value="sfo">San Francisco</option>
+            		<option value="pdx">Portland</option>
+            	</select>
+        	</p>
             <p><input type="submit" value="Submit" /></p>
         </form>
     </section>
@@ -172,4 +141,46 @@
     		<p><input id="submitDiv" type="submit" value="Finalize" /></p>
     </section>
         
+
+    <div id="side" class="data"><h2>Products Preview</h2></div>    
+    <section id="content" class="data">
+        <div id="stage" class="data" hidden>
+    	Item to submit:<br />
+        Name: <?php echo $_POST["prodName"]; ?><br />
+        Reg Price: <?php echo $_POST["prodOrigPrice"]; ?><br />
+        Special Price: <?php echo $_POST["prodPrice"]; ?><br />
+        Image: <?php echo $_FILES['uploadedfile']['name']; ?>
+        <p></p>
+	    </div>
+        <?php
+            mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
+            mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
+            
+            $sql = "SELECT * FROM specials_temp";
+            $result = mysql_query($sql)or die(mysql_error());
+            
+            echo "<table>";
+            
+            while($row = mysql_fetch_array($result)){
+                $prd_id = $row['spc_id'];
+                $name    = $row['spc_name'];
+                $price     = $row['spc_price'];
+                $origprice = $row['spc_origprice'];
+                $image = $row['spc_imageurl'];
+                $location = $row['spc_location'];
+                if($price="END")
+                {
+                	$name = $date;
+                	//echo "DATE IS ".$date."!";
+                }
+                //else
+                //{
+	                echo "<tr><td style='width: 100px'>".$prd_id."</td><td style='width:200px;text-align:center'>".$location."</td><td style='width:75px'><a href='specials/".$image."' target='_blank'><img src='specials/thumbs/th_".$image."' width='200'/></a></td></tr>";
+	            //}
+            }
+            //next step is to make this into a grid system, load these values into a smaller enclosed
+            //table format and then every 4-5 or so, line break to the next row?
+            echo "</table>";
+        ?>
+    </section>
 </div>

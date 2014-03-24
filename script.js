@@ -90,9 +90,9 @@ $(document).ready(function(){
 					}
 					else{
 						var categorypage = category+".php"; 
-					}
-					if(category == 'about'){
-						$.getScript("about_script.js");
+						if(category == 'about'){
+							$.getScript("about_script.js");
+						}
 					}
 				}
 				else {
@@ -129,6 +129,8 @@ $(document).ready(function(){
 		}
 	});
 
+
+	//about page script only
 	$('#submitDiv').click(function(e){
 		e.preventDefault();
 		$mainContent.load("about.php",function(){

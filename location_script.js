@@ -30,6 +30,7 @@ $(document).ready(function(){
 	};
 	
 	$locCat.click(function(){
+		console.log("location!");
 		var locID = $(this).attr('id');
 		//locID = 'loc'+locID;
 		addyID = ['addy'+locID];
