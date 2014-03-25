@@ -1,5 +1,11 @@
 //shibatafloral location changing script
 
+function swapSpecials(location){
+		var locationSelector = location.attr('id');
+		$('.locCat').removeClass('locSelected');
+		$('#'+locationSelector.toUpperCase()).addClass('locSelected');
+};
+
 $(document).ready(function(){
 	var $locCat = $('.locCat');
 	var $locWindow = $('#locWindow');
@@ -7,7 +13,6 @@ $(document).ready(function(){
 	var $locMap = $('#locMap');
 	var $linkYelp = $('#linkYelp');
 	var $linkGmap = $('#linkGmap');
-
 	//default values: SF. set as image to help with loading/ani slowdown
 	//$locMap.attr('src','locmap_default.jpg');
 
@@ -30,7 +35,7 @@ $(document).ready(function(){
 	};
 	
 	$locCat.click(function(){
-		console.log("location!");
+		swapSpecials($(this));
 		var locID = $(this).attr('id');
 		//locID = 'loc'+locID;
 		addyID = ['addy'+locID];

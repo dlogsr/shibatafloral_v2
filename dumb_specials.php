@@ -53,7 +53,7 @@
                         if($price=="END")
                         {
                             $date = $row['spc_name'];
-                            //echo "<script>document.getElementById('dateTitle').innerHTML='Specials for Week of ".$date."';</script>";
+                            echo "<script>document.getElementById('dateTitle').innerHTML='Specials for <br/>Week of ".$date."';</script>";
                         }
                         else
                         {

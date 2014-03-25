@@ -89,7 +89,7 @@ $(document).ready(function(){
 						var categorypage = "dumb_"+category+".php";
 					}
 					else{
-						var categorypage = category+".php"; 
+						var categorypage = category+".html"; 
 						if(category == 'about'){
 							$.getScript("about_script.js");
 						}

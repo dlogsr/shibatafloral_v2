@@ -1,6 +1,14 @@
 <!--<link style="text/css" rel="stylesheet" href="des1style.css" />-->
 <link style="text/css" rel="stylesheet" href="contentstyle.css" />
 <link href="//fonts.googleapis.com/css?family=Open+Sans:600,300" rel="stylesheet" type="text/css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+  </script>
 <div id="maincontent" class="main">
 	<?php 
 
@@ -114,9 +122,9 @@
     </section>
     <section id="addProductsForm" class="data">
     	<h2>Step 2: Add each special individually here.</h2>
-    	<p>Once you hit "submit", the page will refresh and the item will be added to the list above. <strong>Repeat until complete.</strong></p>
-    	<p><strong>As of right now, you can ONLY upload JPG files.</strong> You can review what's been upload so far at the bottom of the page.</p>
-    	<p><strong>The files must NOT have the same name (i.e. both named "special_1.jpg")</strong></p>
+    	<p>Once you hit "submit", the page will refresh and the item will be added to the list at the bottomr of the page. <strong>Repeat until complete.</strong></p>
+    	<p><strong>As of right now, you can ONLY upload JPG files.</strong> You can review what's been uploaded so far at the bottom of the page.</p>
+    	<p><strong>The files must NOT have the same name (i.e. both CANNOT be named "special_1.jpg")</strong></p>
     	<form name="addProduct" action="db_specials_add.php" method="post" enctype="multipart/form-data" style="text-align:left;width:500px;margin:auto">
             <input type="hidden" name="prodName" value="Name"/>
             <input type="hidden" name="prodRegPrice" value="Price"/>
@@ -137,7 +145,7 @@
     	<p>Please note that you MUST enter a date below for this change to go through.</p>
     	<p>Once you hit "Finalize", the current list of items you see above will be sent to the "Specials" page on the main site.</p>
     	<form name="finalizeSpecials" action="db_specials_add.php" method="post" enctype="multipart/form-data">
-    		<p><strong>Date for specials: <input type="text" name="spcDate" /></strong></p>
+    		<p><strong>Date for specials: <input type="text" name="spcDate" id="datepicker" /></strong></p>
     		<p><input id="submitDiv" type="submit" value="Finalize" /></p>
     </section>
         
