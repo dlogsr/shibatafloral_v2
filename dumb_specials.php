@@ -17,7 +17,7 @@
         <div class="specialsContent">
             <?php
                 mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-                $check = mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
+                $check = mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
 
                 $sql = "SELECT * FROM specials";
                 //$sql_lax = "SELECT * FROM specials WHERE spc_location = 'lax'";
@@ -53,7 +53,7 @@
                         if($price=="END")
                         {
                             $date = $row['spc_name'];
-                            echo "<script>document.getElementById('dateTitle').innerHTML='Specials for <br/>Week of ".$date."';</script>";
+                            echo "<script>document.getElementById('dateTitle').innerHTML='Specials, Week of ".$date."';</script>";
                         }
                         else
                         {

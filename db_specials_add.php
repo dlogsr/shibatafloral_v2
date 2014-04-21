@@ -25,7 +25,7 @@
 		elseif($_POST[clearSpec] == true){
 			$cleared = true;
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
 			mysql_query("DROP TABLE IF EXISTS specials");
 			mysql_query("DROP TABLE IF EXISTS specials_temp");
 			echo "<p><strong>DATABASE CLEARED!</strong></p>";
@@ -41,7 +41,7 @@
 		elseif($_POST[spcDate] != NULL) // check if we are finalizing the data (there is a date)
 		{
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
 			mysql_query("DROP TABLE IF EXISTS specials");
 			mysql_query("CREATE TABLE specials LIKE specials_temp");
 			mysql_query("INSERT INTO specials SELECT * FROM specials_temp");
@@ -52,7 +52,7 @@
 		{
 			echo "<p>No data to add.</p>";
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
 			mysql_query("CREATE TABLE IF NOT EXISTS  specials_temp(
 				spc_id int not null auto_increment primary key,
 				spc_name varchar(355) not null,
@@ -69,7 +69,7 @@
 		if($submitted)
 		{
 			mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-			mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
+			mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
 
 			//make sure we know what to save the file name as in the DB
 			$filename = $_FILES['uploadedfile']['name'];
@@ -162,7 +162,7 @@
 	    </div>
         <?php
             mysql_connect("localhost","sfclax_mysql","shibata") or die(mysql_error());
-            mysql_select_db("sfclax_dumb_specials_dev") or die(mysql_error());
+            mysql_select_db("sfclax_dumb_specials") or die(mysql_error());
             
             $sql = "SELECT * FROM specials_temp";
             $result = mysql_query($sql)or die(mysql_error());

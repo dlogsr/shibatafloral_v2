@@ -88,6 +88,9 @@ $(document).ready(function(){
 					if(category == 'specials'){
 						var categorypage = "dumb_"+category+".php";
 					}
+					else if(category == 'products'){
+						var categorypage = category+".php";
+					}
 					else{
 						var categorypage = category+".html"; 
 						if(category == 'about'){
